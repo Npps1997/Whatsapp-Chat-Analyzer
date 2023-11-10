@@ -32,7 +32,7 @@ def fetch_stats(selected_user,df):
 def most_busy_users(df):
     x = df['user'].value_counts().head()
     df = round((df['user'].value_counts() / df.shape[0]) * 100, 2).reset_index().rename(
-        columns={'index': 'name', 'user': 'percent'})
+        columns={'count': 'percent', 'user': 'name'})
     return x,df
 
 def create_wordcloud(selected_user,df):
@@ -60,7 +60,7 @@ def create_wordcloud(selected_user,df):
 
 def most_common_words(selected_user,df):
 
-    f = open('stop_hinglish.txt','r')
+    f = open('stopwords.txt','r')
     stop_words = f.read()
 
     if selected_user != 'Overall':
@@ -85,7 +85,7 @@ def emoji_helper(selected_user,df):
 
     emojis = []
     for message in df['message']:
-        emojis.extend([c for c in message if c in emoji.UNICODE_EMOJI['en']])
+        emojis.extend([c for c in message if c in emoji.EMOJI_DATA])
 
     emoji_df = pd.DataFrame(Counter(emojis).most_common(len(Counter(emojis))))
 
